@@ -7,7 +7,7 @@ var options = {
     'nh.oiorest.dk': '127.0.0.1:3000',
     'domaintwo.net': '127.0.0.1:9001',
     'domainthree.org': '127.0.0.1:9002'
-  }
+  },
    forward: {
      host: '127.0.0.1',
      port: 3000
