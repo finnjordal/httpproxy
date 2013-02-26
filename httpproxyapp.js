@@ -1,20 +1,32 @@
-var http = require('http'),
-    httpProxy = require('http-proxy');
+var http = require('http')
+  , https= require('https')
+  , fs= require('fs')
+  , httpProxy = require('http-proxy');
 
-var options = {
+var httpOptions = {
   hostnameOnly: true,
   router: {
-    'nh.oiorest.dk': '127.0.0.1:3000',
 	  'postnumre.oiorest.dk': '127.0.0.1:3000',
-    'domaintwo.net': '127.0.0.1:9001',
-    'domainthree.org': '127.0.0.1:9002'
-  },
-   forward: {
-     host: '127.0.0.1',
-     port: 3000
-   }
+    'postnumre.dk': '127.0.0.1:3000'
+  }
 }
 
-var port= 9000;
-var proxyServer = httpProxy.createServer(options).listen(port);
-console.log("Proxy server listening on port %d", port);
+var httpsOptions = {
+  hostnameOnly: true,
+  router: {
+    'nh.oiorest.dk': '127.0.0.1:2000',
+    'kvik.oiorest.dk': '127.0.0.1:2000'
+  },
+  https: {
+    key: fs.readFileSync('../certificate/privateKey.pem', 'utf8'),
+    cert: fs.readFileSync('../certificate/publicCert.pem', 'utf8')
+  }
+};
+
+var httpPort= 9000;
+var proxyServer = httpProxy.createServer(httpOptions).listen(httpPort);
+console.log(" Http proxy server listening on port %d", httpPort);
+
+var httpsPort= 8000;
+var proxyServer = httpProxy.createServer(httpsOptions).listen(httpsPort);
+console.log(" Https proxy server listening on port %d", httpsPort);
